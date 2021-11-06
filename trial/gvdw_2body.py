@@ -17,6 +17,7 @@ for i2 in range(len(sys.argv)):
 	else:
 		pass
 
+Na = float(1000) # Added by Sajjad
 
 def gamma_f(v,a,b):
 	return a*(a*v)**(b-1)*np.exp(-a*v)/gamma(b)
@@ -106,7 +107,7 @@ for ik in range(len(Nay)):
 	plt.text(0.35,4.2,"$r^+$")
 	plt.text(0.44,0.2,"$r_{pm}$")
 	plt.text(0.46,-0.8,"$r_{fm}$")
-	plt.savefig("1.png",dpi=300)
+	plt.savefig("rAnnotatedPlot.png",dpi=300)
 	#plt.show()
 	beta_c=0
 	for i in range(len(rp0)-1):

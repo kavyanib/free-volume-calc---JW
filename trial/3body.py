@@ -14,6 +14,8 @@ for i2 in range(len(sys.argv)):
 		t1=str(sys.argv[i2+1])
 	else:
 		pass
+Na = str(1000) # Added by Sajjad
+t1 = str(450) # Added by Sajjad
 
 def omega_k(k,N):
 	d=1.34
@@ -111,7 +113,7 @@ plt.plot(r,I,'-b')
 plt.xlim(0,3)
 plt.xlabel("$r$")
 plt.ylabel("$I(r)$")
-plt.savefig("1.png",dpi=300)
+plt.savefig("r3-2.png",dpi=300)
 #plt.ylim(-1,10)
 #plt.show()
 

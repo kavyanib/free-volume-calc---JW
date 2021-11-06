@@ -161,13 +161,13 @@ for i in range(len(N_a)):
 		n_f_log.append(np.log10(N_a[i]))
 		y_f_log.append(np.log10(d2i[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
-print(popt,np.sqrt(np.diag(pcov)))
+print("\nThe 1st slope is: "+str(popt[0]))
+# print(popt,np.sqrt(np.diag(pcov)))
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
 n_f2=[ii*28 for ii in n_f]
 plt.plot(n_f2,y_f,'-b')
-
 n_f=np.arange(20,300+20,20)
 n_f_log=[]
 y_f_log=[]
@@ -176,7 +176,9 @@ for i in range(len(N_a)):
 		n_f_log.append(np.log10(N_a[i]))
 		y_f_log.append(np.log10(d2i[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
-print(popt)
+
+print("\nThe 2nd slope is: "+str(popt[0]))
+
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
@@ -193,7 +195,10 @@ for i in range(len(N_a)):
 		n_f_log.append(np.log10(N_a[i]))
 		y_f_log.append(np.log10(d2h[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
-print(popt,np.sqrt(pcov[0][0]))
+
+print("\nThe 3rd slope is: "+str(popt[0]))
+
+# print(popt,np.sqrt(pcov[0][0]))
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
@@ -208,7 +213,9 @@ for i in range(len(N_a)):
 		n_f_log.append(np.log10(N_a[i]))
 		y_f_log.append(np.log10(d2h[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
-print(popt,pcov)
+print("\nThe 4th slope is: "+str(popt[0])+"\n\n")
+
+# print(popt,pcov)
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
@@ -324,6 +331,12 @@ plt.ylabel(r"$\eta~\mathrm{(Pa\cdot s)}$")
 #plt.ylim(10**(-3),1000)
 plt.savefig("test3_pe.png",dpi=300)
 plt.show()
+
+
+
+######################
+##### From this line, it starts to generate plot $\eta$ vs. 1000/T.
+
 
 plt.figure()
 plt.rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
@@ -593,20 +606,20 @@ plt.ylim(10**(-3),5*10**4)
 plt.savefig("test31.png",dpi=300)
 plt.show()
 
-'''
-Ea_app=[]
-M=[2000*28,1000*28,900*28,800*28]
-Ea_app.append(popt[1]*8.314/4.18)
-Ea_app.append(popt2[1]*8.314/4.18)
-Ea_app.append(popt3[1]*8.314/4.18)
-Ea_app.append(popt4[1]*8.314/4.18)
-plt.figure()
-plt.rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
-plt.rc('text', usetex=True)
-plt.gcf().set_size_inches(4,3,forward=True)
-plt.subplots_adjust(left=0.18,bottom=0.15)
-plt.plot(M,Ea_app,'sb')
-plt.xscale("log")
-plt.show()
-'''
+print("\n\n>>>> END <<<<\n\n")
+
+# Ea_app=[]
+# M=[2000*28,1000*28,900*28,800*28]
+# Ea_app.append(popt[1]*8.314/4.18)
+# Ea_app.append(popt2[1]*8.314/4.18)
+# Ea_app.append(popt3[1]*8.314/4.18)
+# Ea_app.append(popt4[1]*8.314/4.18)
+# plt.figure()
+# plt.rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+# plt.rc('text', usetex=True)
+# plt.gcf().set_size_inches(4,3,forward=True)
+# plt.subplots_adjust(left=0.18,bottom=0.15)
+# plt.plot(M,Ea_app,'sb')
+# plt.xscale("log")
+# plt.show()
 

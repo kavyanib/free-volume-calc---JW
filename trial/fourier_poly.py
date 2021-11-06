@@ -13,6 +13,8 @@ for i2 in range(len(sys.argv)):
 	else:
 		pass
 
+Na = 1000 # Added by Sajjad
+
 def lj_p(r):
 	f=4*(1)*((1/(r)**12)-(1/(r)**6))
 	return f
