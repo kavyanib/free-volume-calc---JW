@@ -98,6 +98,7 @@ transform_matrix = np.array([[np.cos(avg_rotation_in_rad), -np.sin(avg_rotation_
 #
 # Now, we just need to correct the value of d2i, d2i2, d2i1, d2j1 and d2h:
 
+## Transform the di1 etc to "log" scale, transform them, and then take them back:
 d1i = np.log10(d1i)
 d2i = np.log10(d2i)
 d1i = np.array(d1i)*transform_matrix[0, 0] + np.array(d2i)*transform_matrix[0, 1]
@@ -133,8 +134,17 @@ d1h = np.array(d1h)*transform_matrix[0, 0] + np.array(d2h)*transform_matrix[0, 1
 d2h = np.array(d1h)*transform_matrix[1, 0] + np.array(d2h)*transform_matrix[1, 1] + 0.30
 d1h = 10**d1h
 d2h = 10**d2h
+## Re-scaling and transformation is done!
 
 
+## after transformation:
+# eta_T is for Mw = 72000
+# eta_T2 is for Mw = 30000
+# eta_T3 is for Mw = 28000
+# eta_T4 is for Mw = 24000
+# eta_T5 is for Mw = 20000
+# eta_T6 is for Mw = 17000
+# eta_T7 is for Mw = 14000
 eta_T.append(d2i[len(d2i)-1])
 eta_T.append(d2i2[len(d2i2)-1])
 eta_T.append(d2i1[len(d2i1)-1])
@@ -170,11 +180,11 @@ eta_T5.append(d2i1[len(d2i1)-5])
 eta_T5.append(d2j1[len(d2j1)-5])
 eta_T5.append(d2h[len(d2h)-5])
 
-eta_T6.append(d2i[5])
-eta_T6.append(d2i2[5])
-eta_T6.append(d2i1[5])
-eta_T6.append(d2j1[5])
-eta_T6.append(d2h[5])
+eta_T6.append(d2i[len(d2i)-6])
+eta_T6.append(d2i2[len(d2i2)-6])
+eta_T6.append(d2i1[len(d2i1)-6])
+eta_T6.append(d2j1[len(d2j1)-6])
+eta_T6.append(d2h[len(d2h)-5])
 
 eta_T7.append(d2i[len(d2i)-7])
 eta_T7.append(d2i2[len(d2i2)-7])
@@ -566,7 +576,7 @@ inp_str = ""
 plt.text(700,5*10,"$\mathrm{slope=3.64}$",color='b')
 
 
-plt.xlabel("$M~\mathrm{(g\cdot mole^{-1})}$")
+plt.xlabel("$M_w~\mathrm{(g\cdot mole^{-1})}$")
 plt.xscale("log")
 plt.yscale("log")
 plt.ylabel(r"$\eta~\mathrm{(Pa\cdot s)}$")
@@ -574,7 +584,7 @@ plt.ylabel(r"$\eta~\mathrm{(Pa\cdot s)}$")
 #plt.ylim(10**(0),10**6)
 #plt.xlim(200,1*10**5)
 #plt.ylim(10**(-3),1000)
-plt.savefig("test3_pe.png",dpi=300)
+plt.savefig("eta-vs-Mw.png",dpi=300)
 plt.show()
 
 
@@ -591,15 +601,15 @@ plt.subplots_adjust(left=0.18,bottom=0.15)
 T1=[1000/ii for ii in T]
 T11=np.arange(440,490,1)
 T12=[1000/ii for ii in T11]
-popt,pcov=curve_fit(f2,T1,eta_T)
-popt2,pcov2=curve_fit(f2,T1,eta_T2)
-popt3,pcov3=curve_fit(f2,T1,eta_T3)
-popt4,pcov4=curve_fit(f2,T1,eta_T4)
+popt,pcov=curve_fit(f2,T1,eta_T)     # eta_T is for Mw = 72000 (based on corrected data)
+popt2,pcov2=curve_fit(f2,T1,eta_T2)  # eta_T2 is for Mw = 30000 (based on corrected data)
+popt3,pcov3=curve_fit(f2,T1,eta_T3)  # eta_T3 is for Mw = 28000 (based on corrected data)
+popt4,pcov4=curve_fit(f2,T1,eta_T4)  # eta_T4 is for Mw = 24000 (based on corrected data)
 
-popt5,pcov5=curve_fit(f2,T1,eta_T5)
-popt6,pcov6=curve_fit(f2,T1,eta_T6)
-popt7,pcov7=curve_fit(f2,T1,eta_T7)
-popt8,pcov8=curve_fit(f2,T1,eta_T8)
+popt5,pcov5=curve_fit(f2,T1,eta_T5)  # eta_T5 is for Mw = 20000 (based on corrected data)
+popt6,pcov6=curve_fit(f2,T1,eta_T6)  # eta_T6 is for Mw = 17000 (based on corrected data)
+popt7,pcov7=curve_fit(f2,T1,eta_T7)  # eta_T7 is for Mw = 14000 (based on corrected data)
+popt8,pcov8=curve_fit(f2,T1,eta_T8)  # eta_T8 is for Mw = 72000 (based on corrected data)
 
 
 
@@ -638,55 +648,50 @@ print("N=700,",popt5[1]*8.314/4.18)
 print("N=70,",popt6[1]*8.314/4.18)
 print("N=500,",popt7[1]*8.314/4.18)
 print("N=40,",popt8[1]*8.314/4.18)
-plt.plot(xf,yf,"-b")
-plt.plot(xf,yf2,"-b")
+plt.plot(xf,yf,"-r") # is for Mw = 70000
+plt.plot(xf,yf2,"-r") # is for Mw = 30000
 #plt.plot(xf,yf3,"-b")
 #plt.plot(xf,yf4,"-b")
-#plt.plot(xf,yf5,"-b")
-plt.plot(xf,yf6,"-b")
-plt.plot(xf,yf7,"-b")
-plt.plot(xf,yf8,"-b")
+plt.plot(xf,yf5,"-r")
+# plt.plot(xf,yf6,"-b") # is for Mw = 17000
+plt.plot(xf,yf7,"-r") # Is for Mw = 14000
+# plt.plot(xf,yf8,"-r")
 
-plt.plot(T1,eta_T2,"^b")
+plt.plot(T1,eta_T,"^r", zorder = 10) # is for Mw = 70000
+plt.plot(T1,eta_T2,"^r") # is for Mw = 30000
 #plt.plot(T1,eta_T3,"^b")
 #plt.plot(T1,eta_T4,"sb")
-#plt.plot(T1,eta_T5,"db")
-plt.plot(T1,eta_T6,"^b")
-plt.plot(T1,eta_T7,"^b")
-plt.plot(T1,eta_T8,"^b")
-plt.text(2.5,0.005,"$M=1.1~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,0.1,"$M=2~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,10,"$M=14~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,100,"$M=28~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,400,"$M=30~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,1000,"$M=60~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.5,3000,"$M=70~\mathrm{kg\cdot mole^{-1}}$")
-plt.text(2.47,10000,"$M=139~\mathrm{kg\cdot mole^{-1}}$")
-filename="data_70k.txt"
-readfile = open(filename,'r')
-sepfile = readfile.read().split('\n')
-readfile.close()
-T13=[]
-eta13=[]
-for pair in sepfile:
-	if pair == "":
-		break
-	else:
-		matrix = pair.split()
-		T13.append(1000/(float(matrix[0])+273))
-		eta13.append(float(matrix[1]))
-#plt.plot(T13,eta13,"s",markerfacecolor='w',markeredgecolor='b')
-plt.plot(T13,eta13,"s",markerfacecolor='w',markeredgecolor='b')
-popt2,pcov2=curve_fit(f2,T13,eta13)
+plt.plot(T1,eta_T5,"^r")
+# plt.plot(T1,eta_T6,"^b") # is for Mw = 17000
+plt.plot(T1,eta_T7,"^r") # is for Mw = 14000
+# plt.plot(T1,eta_T8,"^r")
 
-xf=[]
-yf=[]
-for i in range(len(T13)):
-	xf.append(T13[i])
-	yf.append(f2(T13[i],popt2[0],popt2[1]))
-plt.plot(xf,yf,'-b')
+plt.text(2.5,0.005,"$M=1.1~\mathrm{k}$", fontsize=8, color = 'b')
+plt.text(2.5,0.1,"$M=2~\mathrm{k}$", fontsize=8, color = 'b')
+plt.text(2.5,3.5,"$M=14~\mathrm{k}$", fontsize=8, color = 'r')
+plt.text(2.75,3.5,",", fontsize=8)
+plt.text(2.8,3.5,"$M=11\mathrm{k}$", fontsize=8, color = 'b')
+plt.text(2.5,11,"$M=20~\mathrm{k}$", fontsize=8, color = 'r')
+plt.text(2.5,22,"$M=17~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.5,49,"$M=30~\mathrm{k}$", fontsize=8, color = 'r')
+plt.text(2.5,120,"$M=28~\mathrm{k}$", fontsize=8, color = 'b')
+plt.text(2.5,250,"$M=35~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.5,1000,"$M=60~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.5,3000,"$M=70~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.47,14000,"$M=130~\mathrm{k}$", fontsize=8, color = 'g')
 
-filename="data_30k.txt"
+
+###### Collecting the slop of the eta-vs-1/T for the plot of Ea-vs-Mw:
+## for the free volume theory:
+eta_free_vol = np.array([popt[1], popt2[1], popt3[1], popt4[1], popt5[1], popt7[1]])
+eta_free_vol = eta_free_vol * 8.314/4.18
+eta_free_vol_Mw = np.array([71000, 30000, 28000, 24000, 20000, 14000])
+eta_free_vol_Mw = eta_free_vol_Mw/1000
+#########################
+## Plotting the data by Najm abd Savvas: (corrected) by Sajjad
+
+## pt. 1
+filename="data_marina_Mw_17K_sk.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -697,9 +702,9 @@ for pair in sepfile:
 		break
 	else:
 		matrix = pair.split()
-		T12.append(1000/(float(matrix[0])+273))
+		T12.append(1000/(float(matrix[0])))
 		eta12.append(float(matrix[1]))
-plt.plot(T12,eta12,"s",markerfacecolor='w',markeredgecolor='b')
+plt.plot(T12,eta12,"s",markerfacecolor='w',markeredgecolor='g')
 popt2,pcov2=curve_fit(f2,T12,eta12)
 
 xf=[]
@@ -707,9 +712,12 @@ yf=[]
 for i in range(len(T12)):
 	xf.append(T12[i])
 	yf.append(f2(T12[i],popt2[0],popt2[1]))
-plt.plot(xf,yf,'-b')
+plt.plot(xf,yf,'-g')
+eta_Najm = np.array([popt[1]*8.314/4.18])
+eta_Najm_mw = np.array([17000/1000])
 
-filename="data_60k.txt"
+## pt. 2
+filename="data_marina_Mw_35K_sk.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -720,9 +728,9 @@ for pair in sepfile:
 		break
 	else:
 		matrix = pair.split()
-		T11.append(1000/(float(matrix[0])+273))
+		T11.append(1000/(float(matrix[0])))
 		eta11.append(float(matrix[1]))
-plt.plot(T11,eta11,"s",markerfacecolor='w',markeredgecolor='b')
+plt.plot(T11,eta11,"s",markerfacecolor='w',markeredgecolor='g')
 
 popt2,pcov2=curve_fit(f2,T11,eta11)
 
@@ -731,9 +739,14 @@ yf=[]
 for i in range(len(T11)):
 	xf.append(T11[i])
 	yf.append(f2(T11[i],popt2[0],popt2[1]))
-plt.plot(xf,yf,'-b')
+plt.plot(xf,yf,'-g')
 
-filename="data_139k.txt"
+eta_Najm = np.append(eta_Najm, popt2[1]*8.314/4.18)
+eta_Najm_mw = np.append(eta_Najm_mw, 35000/1000)
+
+
+## pt. 3
+filename="data_marina_Mw_60K_sk.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -744,9 +757,9 @@ for pair in sepfile:
 		break
 	else:
 		matrix = pair.split()
-		T11.append(1000/(float(matrix[0])+273))
+		T11.append(1000/(float(matrix[0])))
 		eta11.append(float(matrix[1]))
-plt.plot(T11,eta11,"s",markerfacecolor='w',markeredgecolor='b')
+plt.plot(T11,eta11,"s",markerfacecolor='w',markeredgecolor='g')
 
 popt2,pcov2=curve_fit(f2,T11,eta11)
 
@@ -755,9 +768,72 @@ yf=[]
 for i in range(len(T11)):
 	xf.append(T11[i])
 	yf.append(f2(T11[i],popt2[0],popt2[1]))
-plt.plot(xf,yf,'-b')
+plt.plot(xf,yf,'-g')
 
-filename="pearson_1000.txt"
+eta_Najm = np.append(eta_Najm, popt2[1]*8.314/4.18)
+eta_Najm_mw = np.append(eta_Najm_mw, 60000/1000)
+
+## pt. 4
+filename="data_marina_Mw_70K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+T13=[]
+eta13=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		T13.append(1000/(float(matrix[0])))
+		eta13.append(float(matrix[1]))
+#plt.plot(T13,eta13,"s",markerfacecolor='w',markeredgecolor='b')
+plt.plot(T13,eta13,"s",markerfacecolor='w',markeredgecolor='g')
+popt2,pcov2=curve_fit(f2,T13,eta13)
+
+xf=[]
+yf=[]
+for i in range(len(T13)):
+	xf.append(T13[i])
+	yf.append(f2(T13[i],popt2[0],popt2[1]))
+plt.plot(xf,yf,'-g')
+
+eta_Najm = np.append(eta_Najm, popt2[1]*8.314/4.18)
+eta_Najm_mw = np.append(eta_Najm_mw, 70000/1000)
+
+## pt. 5
+filename="data_marina_Mw_130K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+T11=[]
+eta11=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		T11.append(1000/(float(matrix[0])))
+		eta11.append(float(matrix[1]))
+plt.plot(T11,eta11,"s",markerfacecolor='w',markeredgecolor='g')
+
+popt2,pcov2=curve_fit(f2,T11,eta11)
+
+xf=[]
+yf=[]
+for i in range(len(T11)):
+	xf.append(T11[i])
+	yf.append(f2(T11[i],popt2[0],popt2[1]))
+plt.plot(xf,yf,'-g')
+
+eta_Najm = np.append(eta_Najm, popt2[1]*8.314/4.18)
+eta_Najm_mw = np.append(eta_Najm_mw, 130000/1000)
+
+#################################
+### Plotting other experimintal results (read README.md file for more info)
+
+## pt. 1
+filename="pearson_1000.txt"  # This is for Mw = 28000 (sample 8 in paper)
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -770,13 +846,18 @@ for pair in sepfile:
 		matrix = pair.split()
 		dx.append(float(matrix[0]))
 		dy.append(10**float(matrix[1])*0.1)
-plt.plot(dx,dy,"^",markeredgecolor='b',markerfacecolor='w')
+plt.plot(dx,dy,"^c",markeredgecolor='b',markerfacecolor='w')
 popt,pcov=curve_fit(f2,dx,dy)
 dy2=[]
 for i in range(len(dx)):
 	dy2.append(f2(dx[i],popt[0],popt[1]))
-plt.plot(dx,dy2,'--b')
+plt.plot(dx,dy2,'-b')
 print("pearson1000=",popt[1]*8.314/4.18)
+
+eta_Pearson = np.array([popt[1]*8.314/4.18])
+eta_Pearson_Mw = np.array([28000/1000])
+
+## pt. 2
 filename="pearson_500.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -799,6 +880,10 @@ plt.plot(dx,dy2,'--b')
 print("pearson500=",popt[1]*8.314/4.18)
 print("dy=",dy)
 
+eta_Pearson = np.append(eta_Pearson, popt[1]*8.314/4.18)
+eta_Pearson_Mw = np.append(eta_Pearson_Mw, 11000/1000)
+
+# pt. 3
 filename="pearson_70.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -821,6 +906,10 @@ plt.plot(dx,dy2,'--b')
 print("pearson70=",popt[1]*8.314/4.18)
 print("dy=",dy)
 
+eta_Pearson = np.append(eta_Pearson, popt[1]*8.314/4.18)
+eta_Pearson_Mw = np.append(eta_Pearson_Mw, 2000/1000)
+
+## pt. 4
 filename="pearson_37.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -842,14 +931,44 @@ for i in range(len(dx)):
 plt.plot(dx,dy2,'--b')
 print("pearson37=",popt[1]*8.314/4.18)
 print("dy=",dy)
-plt.plot(T1,eta_T,"^b")
+
+eta_Pearson = np.append(eta_Pearson, popt[1]*8.314/4.18)
+eta_Pearson_Mw = np.append(eta_Pearson_Mw, 1100/1000)
+
+
+########  End of collecting and preparing for plot ###########
+##############################################################
+
+#### Now plotting eta-vs-1/T :
+
 plt.ylabel("$\eta~(\mathrm{Pa\cdot s})$")
 plt.xlabel("$1000/T~\mathrm{(K^{-1})}$")
 plt.yscale("log")
 plt.xlim(1.8,3.2)
 plt.ylim(10**(-3),5*10**4)
-plt.savefig("test31.png",dpi=300)
+plt.savefig("eta-vs-1_over_T.png",dpi=300)
 plt.show()
+
+#############################
+
+#### Now plotting Ea-vs-Mw:
+plt.plot(eta_free_vol_Mw, eta_free_vol, '^-r', label = 'Theory')
+plt.plot(eta_Najm_mw, eta_Najm, 's-g', label = 'Najm and Savvas')
+plt.plot(eta_Pearson_Mw, eta_Pearson, 'v-b', label = 'Pearson 1987')
+plt.ylabel("$E_{a}~(\mathrm{kcal\cdot mol^{-1}})$")
+plt.xlabel("$M_{w}~\mathrm{(kg\cdot mole^{-1})}$")
+# plt.yscale("log")
+# plt.xlim(1.8,3.2)
+plt.rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
+plt.rc('text', usetex=True)
+plt.gcf().set_size_inches(4,3,forward=True)
+plt.gcf().subplots_adjust(bottom=0.15)
+plt.legend()
+plt.ylim([0,20])
+plt.savefig("Ea-vs-Mw.png",dpi=300)
+plt.show()
+
+
 
 print("\n\n>>>> END <<<<\n\n")
 
