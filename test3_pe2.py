@@ -82,6 +82,59 @@ for pair in sepfile:
 		matrix = pair.split()
 		d1h.append(float(matrix[0]))
 		d2h.append(float(matrix[1])*np.exp(1458/490)*norm_fac)
+
+#### rotation - Linear transformation
+avg_rotation = -1.9359664073211542 # In degree
+avg_rotation_in_rad = avg_rotation*np.pi/180 # In radian
+transform_matrix = np.array([[np.cos(avg_rotation_in_rad), -np.sin(avg_rotation_in_rad)], 
+                             [np.sin(avg_rotation_in_rad), np.cos(avg_rotation_in_rad)]])
+# transform matrix is:
+#  -            -  -   -
+# |  cos   -sin | |  x  |
+# |  sin    cos | |  y  |
+#  -            -  -   -
+# New x is: x.cos - y.sin
+# New y is: x.sin + y.cos 
+#
+# Now, we just need to correct the value of d2i, d2i2, d2i1, d2j1 and d2h:
+
+d1i = np.log10(d1i)
+d2i = np.log10(d2i)
+d1i = np.array(d1i)*transform_matrix[0, 0] + np.array(d2i)*transform_matrix[0, 1]
+d2i = np.array(d1i)*transform_matrix[1, 0] + np.array(d2i)*transform_matrix[1, 1] + 0.30
+d1i = 10**d1i
+d2i = 10**d2i
+
+
+d1i2 = np.log10(d1i2)
+d2i2 = np.log10(d2i2)
+d1i2 = np.array(d1i2)*transform_matrix[0, 0] + np.array(d2i2)*transform_matrix[0, 1]
+d2i2 = np.array(d1i2)*transform_matrix[1, 0] + np.array(d2i2)*transform_matrix[1, 1] + 0.30
+d1i2 = 10**d1i2
+d2i2 = 10**d2i2
+
+d1i1 = np.log10(d1i1)
+d2i1 = np.log10(d2i1)
+d1i1 = np.array(d1i1)*transform_matrix[0, 0] + np.array(d2i1)*transform_matrix[0, 1]
+d2i1 = np.array(d1i1)*transform_matrix[1, 0] + np.array(d2i1)*transform_matrix[1, 1] + 0.30
+d1i1 = 10**d1i1
+d2i1 = 10**d2i1
+
+d1j1 = np.log10(d1j1)
+d2j1 = np.log10(d2j1)
+d1j1 = np.array(d1j1)*transform_matrix[0, 0] + np.array(d2j1)*transform_matrix[0, 1]
+d2j1 = np.array(d1j1)*transform_matrix[1, 0] + np.array(d2j1)*transform_matrix[1, 1] + 0.30
+d1j1 = 10**d1j1
+d2j1 = 10**d2j1
+
+d1h = np.log10(d1h)
+d2h = np.log10(d2h)
+d1h = np.array(d1h)*transform_matrix[0, 0] + np.array(d2h)*transform_matrix[0, 1]
+d2h = np.array(d1h)*transform_matrix[1, 0] + np.array(d2h)*transform_matrix[1, 1] + 0.30
+d1h = 10**d1h
+d2h = 10**d2h
+
+
 eta_T.append(d2i[len(d2i)-1])
 eta_T.append(d2i2[len(d2i2)-1])
 eta_T.append(d2i1[len(d2i1)-1])
@@ -137,23 +190,42 @@ eta_T8.append(d2j1[2])
 eta_T8.append(d2h[2])
 
 
+
+##############################################
+# Printing the free volume theory results.
+# The index "0:9" is for enentangled regime
+# The indexes are:
+# [560.0, 840.0, 1120.0, 1400.0, 1680.0, 1960.0, 2240.0, 2520.0, 2800.0, 5600.0, 
+# 				8400.0, 11200.0, 14000.0, 16800.0, 19600.0, 22400.0, 25200.0, 28000.0, 56000.0]
+
 T=[450,460,470,480,490]
 plt.figure()
 plt.rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
 plt.rc('text', usetex=True)
 plt.gcf().set_size_inches(4,3,forward=True)
 plt.subplots_adjust(left=0.18,bottom=0.15)
-plt.plot(d1i,d2i,'sb',label="$\mathrm{450~K}$")
-plt.plot(d1i2,d2i2,'<g',label="$\mathrm{460~K}$")
-plt.plot(d1i1,d2i1,'>m',label="$\mathrm{470~K}$")
-plt.plot(d1j1,d2j1,'vc',label="$\mathrm{480~K}$")
-plt.plot(d1h,d2h,'or',label="$\mathrm{490~K}$")
+# print("\nLen is: ", str(len(d1i)))
+# print()
+# print (d1i)
+# print()
+
+plt.plot(d1i[12::],d2i[12::],'sb',label="$\mathrm{450~K}$")
+plt.plot(d1i2[12::],d2i2[12::],'<g',label="$\mathrm{460~K}$")
+plt.plot(d1i1[12::],d2i1[12::],'>m',label="$\mathrm{470~K}$")
+plt.plot(d1j1[12::],d2j1[12::],'vc',label="$\mathrm{480~K}$")
+plt.plot(d1h[12::],d2h[12::],'or',label="$\mathrm{490~K}$")
+
+## All of the d1i=d1i2=d1i1=d1j1=d1h. Why so many variables!?!
 
 N_a=np.zeros(len(d1i))
 for i in range(len(d1i)):
 	N_a[i]=d1i[i]/28
 Nc=300
 n_f=np.arange(200,3500+20,20)
+
+#####################################################
+# This part is for the first slope, which is for the "3.87". 
+# 
 n_f_log=[]
 y_f_log=[]
 for i in range(len(N_a)):
@@ -162,23 +234,33 @@ for i in range(len(N_a)):
 		y_f_log.append(np.log10(d2i[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
 print("\nThe 1st slope is: "+str(popt[0]))
-# print(popt,np.sqrt(np.diag(pcov)))
+first_slope = popt[0]
+
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
 n_f2=[ii*28 for ii in n_f]
 plt.plot(n_f2,y_f,'-b')
-n_f=np.arange(20,300+20,20)
-n_f_log=[]
-y_f_log=[]
-for i in range(len(N_a)):
-	if N_a[i]<=Nc:
-		n_f_log.append(np.log10(N_a[i]))
-		y_f_log.append(np.log10(d2i[i]))
-popt,pcov=curve_fit(f1,n_f_log,y_f_log)
 
-print("\nThe 2nd slope is: "+str(popt[0]))
+#####################################################
+# This part is for the second slope, which is for the "1.56". WE DO NOT NEED IT.
+# Commented by Sajjad
 
+# n_f=np.arange(20,300+20,20)
+# n_f_log=[]
+# y_f_log=[]
+# for i in range(len(N_a)):
+# 	if N_a[i]<=Nc:
+# 		n_f_log.append(np.log10(N_a[i]))
+# 		y_f_log.append(np.log10(d2i[i]))
+# popt,pcov=curve_fit(f1,n_f_log,y_f_log)
+
+# print("\nThe 2nd slope is: "+str(popt[0]))
+
+
+#####################################################
+# This part is for the third slope, which is for the "3.77". 
+# 
 y_f=[]
 for i in range(len(n_f)):
 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
@@ -196,31 +278,41 @@ for i in range(len(N_a)):
 		y_f_log.append(np.log10(d2h[i]))
 popt,pcov=curve_fit(f1,n_f_log,y_f_log)
 
+y_f=[]
+for i in range(len(n_f)):
+	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
+n_f2=[ii*28 for ii in n_f]
+plt.plot(n_f2,y_f,'-r')
+
 print("\nThe 3rd slope is: "+str(popt[0]))
+third_slope = popt[0]
 
-# print(popt,np.sqrt(pcov[0][0]))
-y_f=[]
-for i in range(len(n_f)):
-	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
-n_f2=[ii*28 for ii in n_f]
-plt.plot(n_f2,y_f,'-r')
+#####################################################
+# This part is for the forth slope, which is for the "1.54". WE DO NOT NEED IT.
+# Commented by Sajjad
 
-n_f=np.arange(20,300+20,20)
-n_f_log=[]
-y_f_log=[]
-for i in range(len(N_a)):
-	if N_a[i]<=Nc:
-		n_f_log.append(np.log10(N_a[i]))
-		y_f_log.append(np.log10(d2h[i]))
-popt,pcov=curve_fit(f1,n_f_log,y_f_log)
-print("\nThe 4th slope is: "+str(popt[0])+"\n\n")
+# y_f=[]
+# for i in range(len(n_f)):
+# 	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
+# n_f2=[ii*28 for ii in n_f]
+# plt.plot(n_f2,y_f,'-r')
 
-# print(popt,pcov)
-y_f=[]
-for i in range(len(n_f)):
-	y_f.append(10**f1(np.log10(n_f[i]),popt[0],popt[1]))
-n_f2=[ii*28 for ii in n_f]
-plt.plot(n_f2,y_f,'-r')
+# n_f=np.arange(20,300+20,20)
+# n_f_log=[]
+# y_f_log=[]
+# for i in range(len(N_a)):
+# 	if N_a[i]<=Nc:
+# 		n_f_log.append(np.log10(N_a[i]))
+# 		y_f_log.append(np.log10(d2h[i]))
+# popt,pcov=curve_fit(f1,n_f_log,y_f_log)
+# print("\nThe 4th slope is: "+str(popt[0])+"\n\n")
+
+
+
+#############################################
+
+#########################################
+# Plotting Data by Harmandaris et al.
 
 filename="pe_dat_ham.txt"
 readfile = open(filename,'r')
@@ -236,6 +328,10 @@ for pair in sepfile:
 		d1h.append(10**float(matrix[0]))
 		d2h.append(10**float(matrix[1]))
 plt.plot(d1h,d2h,'<',markerfacecolor='w',markeredgecolor='b')
+
+#########################################
+# Plotting Data by Pearson 1994
+
 filename="pearson_1994.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -250,6 +346,10 @@ for pair in sepfile:
 		d14.append(10**float(matrix[0]))
 		d24.append(10**float(matrix[1]))
 plt.plot(d14,d24,'>',markerfacecolor='w',markeredgecolor='b')
+
+#########################################
+# Plotting Data by Pearson 1987
+
 filename="pearson_pe"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -266,6 +366,10 @@ for pair in sepfile:
 plt.plot(d1,d2,'^',markerfacecolor='w',markeredgecolor='b')
 #
 #print(d2)
+
+#########################################
+# Plotting Data by Padding and Briels
+
 filename="padding_pe"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
@@ -281,22 +385,48 @@ for pair in sepfile:
 		d12.append(10**float(matrix[1])*0.01*0.1)
 plt.plot(d11,d12,'o',markerfacecolor='w',markeredgecolor='b')
 
-filename="data_marina.txt"
-readfile = open(filename,'r')
-sepfile = readfile.read().split('\n')
-readfile.close()
-d1=[]
-d2=[]
-for pair in sepfile:
-	if pair == "":
-		break
-	else:
-		matrix = pair.split()
-		d1.append(float(matrix[0]))
-		d2.append(float(matrix[1]))
-plt.plot(d1,d2,'^',markerfacecolor='w',markeredgecolor='g')
+#########################################
+# Plotting Data by Najm and Savvas (part 1)
 
-filename="data_marina1.txt"
+# filename="data_marina.txt"
+# readfile = open(filename,'r')
+# sepfile = readfile.read().split('\n')
+# readfile.close()
+# d1=[]
+# d2=[]
+# for pair in sepfile:
+# 	if pair == "":
+# 		break
+# 	else:
+# 		matrix = pair.split()
+# 		d1.append(float(matrix[0]))
+# 		d2.append(float(matrix[1]))
+# plt.plot(d1,d2,'^',markerfacecolor='w',markeredgecolor='g')
+
+
+#########################################
+# Plotting Data by Najm and Savvas (part 2)
+
+# filename="data_marina1.txt"
+# readfile = open(filename,'r')
+# sepfile = readfile.read().split('\n')
+# readfile.close()
+# d1=[]
+# d2=[]
+# for pair in sepfile:
+# 	if pair == "":
+# 		break
+# 	else:
+# 		matrix = pair.split()
+# 		d1.append(float(matrix[0]))
+# 		d2.append(float(matrix[1]))
+# plt.plot(d1,d2,'d',markerfacecolor='w',markeredgecolor='g')
+
+
+#######################################
+# Plotting Data by Najm and Savvas - Corrected version (by Sajjad)
+
+filename="data_marina_493K_sk.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -309,16 +439,131 @@ for pair in sepfile:
 		matrix = pair.split()
 		d1.append(float(matrix[0]))
 		d2.append(float(matrix[1]))
-plt.plot(d1,d2,'d',markerfacecolor='w',markeredgecolor='g')
+plt.plot(d1,d2,'o',markerfacecolor='w',markeredgecolor='g')
+
+
+## pt. 2
+filename="data_marina_483K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'v',markerfacecolor='w',markeredgecolor='g')
+
+## pt.3
+filename="data_marina_473K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'>',markerfacecolor='w',markeredgecolor='g')
+
+## pt. 4
+filename="data_marina_463K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'<',markerfacecolor='w',markeredgecolor='g')
+
+## pt. 5
+filename="data_marina_453K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'p',markerfacecolor='w',markeredgecolor='g')
+
+## pt. 6
+filename="data_marina_443K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'P',markerfacecolor='w',markeredgecolor='g')
+
+## pt. 7
+filename="data_marina_433K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'*',markerfacecolor='w',markeredgecolor='g')
+
+## pt. 8
+filename="data_marina_423K_sk.txt"
+readfile = open(filename,'r')
+sepfile = readfile.read().split('\n')
+readfile.close()
+d1=[]
+d2=[]
+for pair in sepfile:
+	if pair == "":
+		break
+	else:
+		matrix = pair.split()
+		d1.append(float(matrix[0]))
+		d2.append(float(matrix[1]))
+plt.plot(d1,d2,'D',markerfacecolor='w',markeredgecolor='g')
+
 
 plt.legend(loc="upper left",fontsize=7,numpoints=1)
 
 
-plt.text(4000,10**(-2),"$\mathrm{slope=1.54}$",color='r')
-plt.text(12000,0.3,"$\mathrm{slope=3.77}$",color='r')
+# plt.text(4000,10**(-2),"$\mathrm{slope=1.54}$",color='r')
+plt.text(12000,0.3,"$\mathrm{slope=3.55}$",color='r')
 
-plt.text(200,20*10**(-2),"$\mathrm{slope=1.56}$",color='b')
-plt.text(700,5*10,"$\mathrm{slope=3.87}$",color='b')
+# plt.text(200,20*10**(-2),"$\mathrm{slope=1.56}$",color='b')
+inp_str = ""
+plt.text(700,5*10,"$\mathrm{slope=3.64}$",color='b')
 
 
 plt.xlabel("$M~\mathrm{(g\cdot mole^{-1})}$")
