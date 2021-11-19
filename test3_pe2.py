@@ -678,6 +678,8 @@ plt.text(2.5,120,"$M=28~\mathrm{k}$", fontsize=8, color = 'b')
 plt.text(2.5,250,"$M=35~\mathrm{k}$", fontsize=8, color = 'g')
 plt.text(2.5,1000,"$M=60~\mathrm{k}$", fontsize=8, color = 'g')
 plt.text(2.5,3000,"$M=70~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.75,3000,",", fontsize=8)
+plt.text(2.8,3000,"$M=70\mathrm{k}$", fontsize=8, color = 'r')
 plt.text(2.47,14000,"$M=130~\mathrm{k}$", fontsize=8, color = 'g')
 
 
