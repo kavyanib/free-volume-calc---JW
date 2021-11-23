@@ -10,10 +10,12 @@ import sys
 for i2 in range(len(sys.argv)):
 	if sys.argv[i2]=="-n":
 		Na=str(sys.argv[i2+1])
+	elif sys.argv[i2]=="-t1":
+		temp=int(sys.argv[i2+1])  # Added By Sajjad to observe temperature effect (if it has)
 	else:
 		pass
 
-Na = 1000 # Added by Sajjad
+# Na = 1000 # Added by Sajjad
 
 def lj_p(r):
 	f=4*(1)*((1/(r)**12)-(1/(r)**6))
@@ -24,7 +26,7 @@ def omega(k,N):
 	return (1-E**2-2*E/N+2*E**(N+1)/N)/(1-E)**2
 
 sigma=1
-temp1=[450]#[400,390,380,370,360,350]#[450,440,430,420,410]
+temp1=[temp]#[400,390,380,370,360,350]#[450,440,430,420,410]   ## Commented by Sajjad
 Nv=float(Na)
 for i5 in range(len(temp1)):
 	beta=(760)/(temp1[i5]*8.314)

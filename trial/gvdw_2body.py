@@ -14,10 +14,12 @@ import sys
 for i2 in range(len(sys.argv)):
 	if sys.argv[i2]=="-n":
 		Na=float(sys.argv[i2+1])
+	elif sys.argv[i2]=="-t1":
+		t1=str(sys.argv[i2+1]) ## Added by Sajjad to include temperature effect in this calculation
 	else:
 		pass
 
-Na = float(1000) # Added by Sajjad
+# Na = float(1000) # Added by Sajjad
 
 def gamma_f(v,a,b):
 	return a*(a*v)**(b-1)*np.exp(-a*v)/gamma(b)
@@ -35,16 +37,17 @@ def f3(r,a1,a2,a3,a4,a5):
 	return a1*np.exp(-a2*r)-a3/r**3-a4/r**4-a5/r**5
 
 Nv=float(Na)
+t1 = int(t1)
 sigma=0.395
-recp=0.00076*450+0.93452+(2*(0.06*450-2.45))/(Nv*14)
+recp=0.00076*t1+0.93452+(2*(0.06*t1-2.45))/(Nv*14)
 rho=0.5*43/recp
 print(rho)
-beta=760/(8.314*450)
+beta=760/(8.314*t1)
 
-filename2="table_result.txt"
+filename2="table_result"+str(int(Na))+"_"+str(t1)+".txt"
 writefile = open(filename2,'w')
 
-filename3="pressure_vol.txt"
+filename3="pressure_vol"+str(int(Na))+"_"+str(t1)+".txt"
 writefile2 = open(filename3,'w')
 
 Ir3=[]
@@ -71,7 +74,7 @@ c_str=["-b","-r","-g","-m","-c","-k","-y"]
 count=0
 for ik in range(len(Nay)):
 	Na=Nay[ik]
-	filename="g-"+str(Na)+"-450-py3.txt"
+	filename="g-"+str(Na)+"-"+str(t1)+"-py3.txt"
 	readfile = open(filename,'r')
 	sepfile = readfile.read().split('\n')
 	readfile.close()
@@ -130,8 +133,8 @@ for ik in range(len(Nay)):
 
 	#0.0833434110843 0.0103059022294 0.0295259808684 0.00164552455028
 
-	beta=1000/(8.314*450)
-	recp=0.00076*450+0.93452+(2*(0.06*450-2.45))/(Nv*14)
+	beta=1000/(8.314*t1)
+	recp=0.00076*t1+0.93452+(2*(0.06*t1-2.45))/(Nv*14)
 	rho=0.5*43/recp
 	vi=0.367**3*np.pi/6
 
@@ -141,7 +144,7 @@ for ik in range(len(Nay)):
 	
 	writefile.write(str(np.exp(-rho*0.656*vi/f)))
 	phi_plus=np.exp(-rho*0.656*vi/f)+0.06
-	p_eff=8.314*450/(6.022*10**(-4)*f/rho)		
+	p_eff=8.314*t1/(6.022*10**(-4)*f/rho)		
 	writefile.write("\n")
 	writefile2.write(str(p_eff*phi_plus*0.656*6.022*10**(-4)*vi+p_eff*6.022*10**(-4)*(1-phi_plus)*f/rho))
 	writefile2.write("\n")

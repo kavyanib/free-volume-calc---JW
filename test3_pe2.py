@@ -12,7 +12,11 @@ def f1(x,m,c):
 def f2(x,m,c):
 	return m*np.exp(x*c)
 eta_T=[]
-norm_fac=2.5*np.exp(-2000/(8.314*490))*np.exp(-2.9*4.18*1000/(8.314*490))
+######
+## 2.9 is "Delta E" in k cal
+# 4.18*1000 is the conversion factor to change "k cal" to "joules"
+delta_E_in_joule =  np.exp(-2.9*4.18*1000/(8.314*490))
+norm_fac=2.5*np.exp(-2000/(8.314*490))*delta_E_in_joule
 filename="eta_l_450k.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')

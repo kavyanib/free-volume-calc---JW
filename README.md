@@ -129,5 +129,6 @@ and its value is written in file `pressure_vol.txt`.
 
 Another output of this file is probability $F$ = $\exp{\left(-\frac{\alpha v_i^+}{\left\langle v_{f,i}\right\rangle}\right)}$ and its value is written in file `table_result.txt`
 
+NOTE: After running scrip `1shell.sh`, it was ound that the output of `gvdw_2body.py` for output files `table_result.txt` and `pressure_vol.txt` is not in agreement with results in Table 1 and 2 in the PDF. It seems that if one set the value on `-n` argument as `N`, in the both of these tables you will see this result for `2xN`!!
 ## 4.4 Script `./trial/1shell.sh`
 This is just a simple bash-script that runs functions `fourier_poly.py`, `3body.py` and `gvdw_2body.py`. 

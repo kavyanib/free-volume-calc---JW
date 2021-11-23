@@ -14,9 +14,11 @@ for i2 in range(len(sys.argv)):
 		t1=str(sys.argv[i2+1])
 	else:
 		pass
-Na = str(1000) # Added by Sajjad
-t1 = str(450) # Added by Sajjad
 
+# Na = str(1000) # Added by Sajjad
+# t1 = str(450) # Added by Sajjad
+
+t1 = int(t1)
 def omega_k(k,N):
 	d=1.34
 	E=np.sin(k*d)/(k*d)
@@ -27,7 +29,7 @@ def lj_f(r):
 	f=4*(-12*(1/r**13)+6*(1/r**7))
 	return f
 
-filename = "g-"+Na+".0-"+t1+"-py3.txt"
+filename = "g-"+Na+".0-"+str(t1)+"-py3.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
