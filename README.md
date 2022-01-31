@@ -74,7 +74,7 @@ These files are used in `eta` ($\eta$) vs. $\frac{1000}{T}$ in Figure 1. The col
 - `pe_dat_ham.txt` is data published by Harmandaris et al. . It is in format `eta` ($\eta$) vs. $logM_w$.
 - `pearson_pe` is data published by Pearson 1987. It is in format `eta` ($\eta$) vs. $logM_w$.
 - `pearson_1994.txt`is data published by Pearson 1994. It is in format `eta` ($\eta$) vs. $logM_w$.
-
+- Filenames with `_Mod` at their end, are the modified version of the original in a way to just include the entanglement regime.
 
 # 3. Variables
 Except some self explanatory variables such as `rho`, `r`, `T`, `N` etc. There are variables `eta_T`, `eta_T2,.., eta_T8` that they contain the values for $\eta$ based on theory for various molecular weights $M_w$.

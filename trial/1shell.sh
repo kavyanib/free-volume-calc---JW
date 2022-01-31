@@ -1,8 +1,8 @@
 #!/bin/bash
 
-for t in 490 
+for t in 450 
 do 
-    for n_bead in 600
+    for n_bead in 1987
     do
 
         python fourier_poly.py -n $n_bead -t1 $t

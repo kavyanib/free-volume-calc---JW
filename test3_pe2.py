@@ -328,7 +328,7 @@ third_slope = popt[0]
 #########################################
 # Plotting Data by Harmandaris et al.
 
-filename="pe_dat_ham.txt"
+filename="pe_dat_ham_Mod.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -346,7 +346,7 @@ plt.plot(d1h,d2h,'<',markerfacecolor='w',markeredgecolor='b')
 #########################################
 # Plotting Data by Pearson 1994
 
-filename="pearson_1994.txt"
+filename="pearson_1994_Mod.txt"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -364,7 +364,7 @@ plt.plot(d14,d24,'>',markerfacecolor='w',markeredgecolor='b')
 #########################################
 # Plotting Data by Pearson 1987
 
-filename="pearson_pe"
+filename="pearson_pe_Mod"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -384,7 +384,7 @@ plt.plot(d1,d2,'^',markerfacecolor='w',markeredgecolor='b')
 #########################################
 # Plotting Data by Padding and Briels
 
-filename="padding_pe"
+filename="padding_pe_Mod"
 readfile = open(filename,'r')
 sepfile = readfile.read().split('\n')
 readfile.close()
@@ -577,7 +577,7 @@ plt.text(12000,0.3,"$\mathrm{slope=3.55}$",color='r')
 
 # plt.text(200,20*10**(-2),"$\mathrm{slope=1.56}$",color='b')
 inp_str = ""
-plt.text(700,5*10,"$\mathrm{slope=3.64}$",color='b')
+plt.text(1700,5*10,"$\mathrm{slope=3.64}$",color='b')
 
 
 plt.xlabel("$M_w~\mathrm{(g\cdot mole^{-1})}$")
@@ -652,10 +652,11 @@ print("N=700,",popt5[1]*8.314/4.18)
 print("N=70,",popt6[1]*8.314/4.18)
 print("N=500,",popt7[1]*8.314/4.18)
 print("N=40,",popt8[1]*8.314/4.18)
+
 plt.plot(xf,yf,"-r") # is for Mw = 70000
 plt.plot(xf,yf2,"-r") # is for Mw = 30000
-#plt.plot(xf,yf3,"-b")
-#plt.plot(xf,yf4,"-b")
+plt.plot(xf,yf3,"-r") # Mw = 28000
+# plt.plot(xf,yf4,"-r")
 plt.plot(xf,yf5,"-r")
 # plt.plot(xf,yf6,"-b") # is for Mw = 17000
 plt.plot(xf,yf7,"-r") # Is for Mw = 14000
@@ -663,28 +664,29 @@ plt.plot(xf,yf7,"-r") # Is for Mw = 14000
 
 plt.plot(T1,eta_T,"^r", zorder = 10) # is for Mw = 70000
 plt.plot(T1,eta_T2,"^r") # is for Mw = 30000
-#plt.plot(T1,eta_T3,"^b")
-#plt.plot(T1,eta_T4,"sb")
+plt.plot(T1,eta_T3,"^r") # Mw = 28000
+# plt.plot(T1,eta_T4,"^r")
 plt.plot(T1,eta_T5,"^r")
 # plt.plot(T1,eta_T6,"^b") # is for Mw = 17000
 plt.plot(T1,eta_T7,"^r") # is for Mw = 14000
 # plt.plot(T1,eta_T8,"^r")
 
-plt.text(2.5,0.005,"$M=1.1~\mathrm{k}$", fontsize=8, color = 'b')
-plt.text(2.5,0.1,"$M=2~\mathrm{k}$", fontsize=8, color = 'b')
-plt.text(2.5,3.5,"$M=14~\mathrm{k}$", fontsize=8, color = 'r')
+# plt.text(2.5,0.005,"$M=1.1~\mathrm{k}$", fontsize=8, color = 'b')
+# plt.text(2.5,0.1,"$M=2~\mathrm{k}$", fontsize=8, color = 'b')
+plt.text(2.5,3.5,"$M=14~\mathrm{k}$", fontsize=7.5, color = 'r')
 plt.text(2.75,3.5,",", fontsize=8)
-plt.text(2.8,3.5,"$M=11\mathrm{k}$", fontsize=8, color = 'b')
-plt.text(2.5,11,"$M=20~\mathrm{k}$", fontsize=8, color = 'r')
-plt.text(2.5,22,"$M=17~\mathrm{k}$", fontsize=8, color = 'g')
-plt.text(2.5,49,"$M=30~\mathrm{k}$", fontsize=8, color = 'r')
-plt.text(2.5,120,"$M=28~\mathrm{k}$", fontsize=8, color = 'b')
-plt.text(2.5,250,"$M=35~\mathrm{k}$", fontsize=8, color = 'g')
-plt.text(2.5,1000,"$M=60~\mathrm{k}$", fontsize=8, color = 'g')
-plt.text(2.5,3000,"$M=70~\mathrm{k}$", fontsize=8, color = 'g')
-plt.text(2.75,3000,",", fontsize=8)
-plt.text(2.8,3000,"$M=70\mathrm{k}$", fontsize=8, color = 'r')
-plt.text(2.47,14000,"$M=130~\mathrm{k}$", fontsize=8, color = 'g')
+plt.text(2.8,3.5,"$M=11\mathrm{k}$", fontsize=7.5, color = 'b')
+plt.text(2.5,11,"$M=20~\mathrm{k}$", fontsize=7.5, color = 'r')
+plt.text(2.5,22,"$M=17~\mathrm{k}$", fontsize=7.5, color = 'g')
+plt.text(2.5,35,"$M=28~\mathrm{k}$", fontsize=7.5, color = 'r')
+plt.text(2.5,55,"$M=30~\mathrm{k}$", fontsize=7.5, color = 'r')
+plt.text(2.5,120,"$M=28~\mathrm{k}$", fontsize=7.5, color = 'b')
+plt.text(2.5,250,"$M=35~\mathrm{k}$", fontsize=7.5, color = 'g')
+plt.text(2.5,1000,"$M=60~\mathrm{k}$", fontsize=7.5, color = 'g')
+plt.text(2.5,3000,"$M=70~\mathrm{k}$", fontsize=7.5, color = 'g')
+plt.text(2.75,3000,",", fontsize=7.5)
+plt.text(2.8,3000,"$M=70\mathrm{k}$", fontsize=7.5, color = 'r')
+plt.text(2.47,14000,"$M=130~\mathrm{k}$", fontsize=7.5, color = 'g')
 
 
 ###### Collecting the slop of the eta-vs-1/T for the plot of Ea-vs-Mw:
@@ -903,12 +905,12 @@ for pair in sepfile:
 		matrix = pair.split()
 		dx.append(float(matrix[0]))
 		dy.append(10**float(matrix[1])*0.1)
-plt.plot(dx,dy,"^",markeredgecolor='b',markerfacecolor='w')
+# plt.plot(dx,dy,"^",markeredgecolor='b',markerfacecolor='w')
 popt,pcov=curve_fit(f2,dx,dy)
 dy2=[]
 for i in range(len(dx)):
 	dy2.append(f2(dx[i],popt[0],popt[1]))
-plt.plot(dx,dy2,'--b')
+# plt.plot(dx,dy2,'--b')
 print("pearson70=",popt[1]*8.314/4.18)
 print("dy=",dy)
 
@@ -929,12 +931,12 @@ for pair in sepfile:
 		matrix = pair.split()
 		dx.append(float(matrix[0]))
 		dy.append(10**float(matrix[1])*0.1)
-plt.plot(dx,dy,"^",markeredgecolor='b',markerfacecolor='w')
+# plt.plot(dx,dy,"^",markeredgecolor='b',markerfacecolor='w')
 popt,pcov=curve_fit(f2,dx,dy)
 dy2=[]
 for i in range(len(dx)):
 	dy2.append(f2(dx[i],popt[0],popt[1]))
-plt.plot(dx,dy2,'--b')
+# plt.plot(dx,dy2,'--b')
 print("pearson37=",popt[1]*8.314/4.18)
 print("dy=",dy)
 
@@ -951,16 +953,35 @@ plt.ylabel("$\eta~(\mathrm{Pa\cdot s})$")
 plt.xlabel("$1000/T~\mathrm{(K^{-1})}$")
 plt.yscale("log")
 plt.xlim(1.8,3.2)
-plt.ylim(10**(-3),5*10**4)
+plt.ylim(10**(-0),1*10**5)
 plt.savefig("eta-vs-1_over_T.png",dpi=300)
 plt.show()
 
 #############################
 
 #### Now plotting Ea-vs-Mw:
-plt.plot(eta_free_vol_Mw, eta_free_vol, '^-r', label = 'Theory')
-plt.plot(eta_Najm_mw, eta_Najm, 's-g', label = 'Najm and Savvas')
-plt.plot(eta_Pearson_Mw, eta_Pearson, 'v-b', label = 'Pearson 1987')
+
+def ea_mw(x, m, c):
+	return -m + c*np.log(x) #m*x+c
+
+
+plt.plot(eta_free_vol_Mw, eta_free_vol, '^r', label = 'Theory')
+popt, _ = curve_fit(ea_mw, eta_free_vol_Mw, eta_free_vol)
+m, c = popt
+yFit_eta_free_vol = ea_mw(eta_free_vol_Mw, m, c)
+plt.plot(eta_free_vol_Mw, yFit_eta_free_vol, '--r')
+plt.text(40, 2.5,'-'+str(round(m, 4))+'+'+str(round(c, 4))+r'$\times$'+"$log M$", fontsize=8, color = 'r')
+
+
+plt.plot(eta_Najm_mw, eta_Najm, 'sg', label = 'Experiment')
+popt, _ = curve_fit(ea_mw, eta_Najm_mw, eta_Najm)
+m, c = popt
+yFit_eta_Najm = ea_mw(eta_Najm_mw, m, c)
+plt.plot(eta_Najm_mw, yFit_eta_Najm, '--g')
+plt.text(40, 8.5, '-'+str(round(m, 4))+'+'+str(round(c, 4))+r'$\times$'+"$log M$", fontsize=8, color = 'g')
+
+
+# plt.plot(eta_Pearson_Mw, eta_Pearson, 'v-b', label = 'Pearson 1987')
 plt.ylabel("$E_{a}~(\mathrm{kcal\cdot mol^{-1}})$")
 plt.xlabel("$M_{w}~\mathrm{(kg\cdot mole^{-1})}$")
 # plt.yscale("log")
